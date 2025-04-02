@@ -1,0 +1,47 @@
+{
+  "name": "Dataviewer",
+  "slug": "dataviewer",
+  "categories": [],
+  "version": "0.1.0",
+  "licence": "AGPL-3.0",
+  "editor": "",
+  "source": "",
+  "developer": {
+    "name": "Linagora",
+    "url": "https://linagora.com"
+  },
+  "routes": {
+    "/": {
+      "folder": "/",
+      "index": "index.html",
+      "public": false
+    },
+    "/web": {
+      "folder": "/",
+      "index": "index.html",
+      "public": false
+    },
+    "/web/": {
+      "folder": "/",
+      "index": "index.html",
+      "public": false
+    }
+  },
+  "permissions": {
+    "apps": {
+      "description": "Required by the cozy-bar to display the icons of the apps",
+      "type": "io.cozy.apps",
+      "verbs": ["GET"]
+    },
+    "settings": {
+      "description": "Required by the cozy-bar to display Claudy and know which applications are coming soon",
+      "type": "io.cozy.settings",
+      "verbs": ["GET"]
+    },
+    "doctypes": {
+      "description": "To get the list of doctypes",
+      "type": "io.cozy.doctypes",
+      "verbs": ["GET"]
+    }
+  }
+}
