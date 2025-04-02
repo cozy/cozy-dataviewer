@@ -36,14 +36,12 @@ const Sidebar = () => {
     )
   }
 
-  console.log('result', result)
-
   return (
     <UISidebar>
       <Nav>
         {result.map(doctype => (
           <NavItem key={doctype}>
-            <NavLink to="/">
+            <NavLink to={`/doctype/${doctype}`}>
               <NavIcon icon={CategoriesIcon} />
               <NavText>{doctype}</NavText>
             </NavLink>
