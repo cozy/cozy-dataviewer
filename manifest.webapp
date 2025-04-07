@@ -42,6 +42,11 @@
       "description": "To get the list of doctypes",
       "type": "io.cozy.doctypes",
       "verbs": ["GET"]
+    },
+    "learningrecords": {
+      "description": "To get the list of learning records",
+      "type": "io.cozy.learningrecords",
+      "verbs": ["GET"]
     }
   }
 }
