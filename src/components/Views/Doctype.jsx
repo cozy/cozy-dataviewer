@@ -5,6 +5,8 @@ import { useClient, Q } from 'cozy-client'
 import Icon from 'cozy-ui/transpiled/react/Icon'
 import SpinnerIcon from 'cozy-ui/transpiled/react/Icons/Spinner'
 
+import { getFormatter } from '../../formatters'
+
 export const Doctype = () => {
   const { doctype } = useParams()
 
@@ -27,10 +29,13 @@ export const Doctype = () => {
     )
   }
 
+  // Get the appropriate formatter for this doctype
+  const formatter = getFormatter(doctype)
+
   return (
     <div>
       <h1>Document Type: {doctype}</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      {formatter(data)}
     </div>
   )
 }
