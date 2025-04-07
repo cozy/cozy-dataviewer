@@ -1,5 +1,9 @@
 import React from 'react'
 
+import Accordion from 'cozy-ui/transpiled/react/Accordion'
+import AccordionDetails from 'cozy-ui/transpiled/react/AccordionDetails'
+import AccordionSummary from 'cozy-ui/transpiled/react/AccordionSummary'
+
 /**
  * Default formatter that simply renders the document as formatted JSON
  * @param {Array} data - Array of documents of the same doctype
@@ -8,7 +12,14 @@ import React from 'react'
 export const defaultFormatter = data => {
   return (
     <div className="default-formatter">
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      {data.map((doc, index) => (
+        <Accordion key={doc._id || index}>
+          <AccordionSummary>{doc._id || 'No ID'}</AccordionSummary>
+          <AccordionDetails>
+            <pre>{JSON.stringify(doc, null, 2)}</pre>
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </div>
   )
 }
