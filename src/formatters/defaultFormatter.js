@@ -16,7 +16,9 @@ export const defaultFormatter = data => {
         <Accordion key={doc._id || index}>
           <AccordionSummary>{doc._id || 'No ID'}</AccordionSummary>
           <AccordionDetails>
-            <pre>{JSON.stringify(doc, null, 2)}</pre>
+            <pre className="u-m-1 u-ov-auto">
+              {JSON.stringify(doc, null, 2)}
+            </pre>
           </AccordionDetails>
         </Accordion>
       ))}
