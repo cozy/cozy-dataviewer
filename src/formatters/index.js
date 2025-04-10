@@ -1,7 +1,10 @@
 import { defaultFormatter } from './defaultFormatter'
+import { jobsFormatter } from './jobsFormatter'
 
 // Map of doctype to formatter
-const formatters = {}
+const formatters = {
+  'io.cozy.jobs': jobsFormatter
+}
 
 /**
  * Get a formatter for a specific doctype
