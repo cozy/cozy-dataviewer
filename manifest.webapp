@@ -47,6 +47,22 @@
       "description": "To get the list of learning records",
       "type": "io.cozy.learningrecords",
       "verbs": ["GET"]
+    },
+    "jobs": {
+      "description": "To send job notifications",
+      "type": "io.cozy.jobs"
+    },
+    "triggers": {
+      "description": "To view triggers",
+      "type": "io.cozy.triggers",
+      "verbs": ["GET"]
+    }
+  },
+  "services": {
+    "webhookReceiver": {
+      "type": "node",
+      "file": "services/webhookReceiver.js",
+      "trigger": "@webhook"
     }
   }
 }
