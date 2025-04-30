@@ -23,7 +23,3 @@ const main = async () => {
     log('critical', error.message)
   }
 })()
-
-function getServiceFields() {
-  return JSON.parse(process.env.COZY_FIELDS || '{}')
-}
