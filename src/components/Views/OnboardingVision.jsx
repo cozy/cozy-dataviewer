@@ -53,7 +53,9 @@ export const OnboardingVision = () => {
 
   const webhookUrl = trigger?.links?.webhook
   const iframeUrl = webhookUrl
-    ? `http://cozy.localhost:8080?webhook=${encodeURIComponent(webhookUrl)}`
+    ? `https://pdi.visionstrust.com/auth?webhook=${encodeURIComponent(
+        webhookUrl
+      )}`
     : null
 
   return (
