@@ -1,0 +1,117 @@
+import React, { useState } from 'react'
+
+import Accordion from 'cozy-ui/transpiled/react/Accordion'
+import AccordionDetails from 'cozy-ui/transpiled/react/AccordionDetails'
+import AccordionSummary from 'cozy-ui/transpiled/react/AccordionSummary'
+import Button from 'cozy-ui/transpiled/react/Buttons'
+import Icon from 'cozy-ui/transpiled/react/Icon'
+import SpinnerIcon from 'cozy-ui/transpiled/react/Icons/Spinner'
+import TextField from 'cozy-ui/transpiled/react/TextField'
+/**
+ * Custom formatter for the jobs doctype
+ * @param {Array} data - Array of jobs
+ * @returns {JSX.Element} - Formatted view of the documents
+ */
+export const learningRecordsFormatter = data => {
+  // We create a component that will handle the state
+  const LearningRecordsView = () => {
+    const [isLoading, setIsLoading] = useState(false)
+
+    return (
+      <div className="jobs-formatter">
+        {data.map((doc, index) => (
+          <Accordion key={doc._id || index}>
+            <AccordionSummary>{doc._id || 'No ID'}</AccordionSummary>
+            <AccordionDetails>
+              <pre className="u-m-1 u-ov-auto">
+                {JSON.stringify(doc, null, 2)}
+              </pre>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+        <div className="u-flex u-flex-items-center">
+          <TextField
+            className="u-mt-1 u-p-1 u-br-2"
+            id="actorEmail"
+            defaultValue="alice@visions.com"
+          />
+          {isLoading && <Icon className="u-ml-1" icon={SpinnerIcon} spin />}
+        </div>
+        <Button
+          className="u-mt-1 u-p-1 u-br-2"
+          label="Import from test organization"
+          onClick={async () => {
+            const actorEmail = document.querySelector('input#actorEmail').value
+            const verb = 'played'
+            const objectId = 'http://example.adlnet.gov/xapi/example/game'
+
+            setIsLoading(true)
+            try {
+              for (let i = 0; i < 10; i++) {
+                const statement = createXAPIStatement(
+                  actorEmail,
+                  verb,
+                  objectId
+                )
+                await sendXAPIStatement(statement)
+              }
+              // Reload the page after all requests are done
+              window.location.reload()
+            } finally {
+              setIsLoading(false)
+            }
+          }}
+        />
+      </div>
+    )
+  }
+
+  return <LearningRecordsView />
+}
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0
+    const v = c === 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
+}
+
+function getCurrentTimestamp() {
+  return new Date().toISOString()
+}
+
+function createXAPIStatement(actorEmail, verb, objectId) {
+  const statementId = generateUUID()
+  return {
+    id: statementId,
+    actor: {
+      mbox: `mailto:${actorEmail}`
+    },
+    verb: {
+      id: `http://adlnet.gov/expapi/verbs/${verb}`,
+      display: {
+        'en-US': verb
+      }
+    },
+    object: {
+      id: objectId
+    },
+    timestamp: getCurrentTimestamp()
+  }
+}
+
+// Function to send xAPI statement
+async function sendXAPIStatement(statement) {
+  await fetch(
+    `http://localhost:3000/proxy/xAPI/statements?statementId=${statement.id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Experience-API-Version': '1.0.3'
+      },
+      body: JSON.stringify(statement)
+    }
+  )
+}
