@@ -46,7 +46,7 @@
     "learningrecords": {
       "description": "To get the list of learning records",
       "type": "io.cozy.learningrecords",
-      "verbs": ["GET"]
+      "verbs": ["GET", "POST", "PUT", "DELETE"]
     },
     "jobs": {
       "description": "To send job notifications",
@@ -63,6 +63,12 @@
       "type": "node",
       "file": "services/webhookReceiver.js",
       "trigger": "@webhook"
+    },
+    "learningRecordsNormalizer": {
+      "type": "node",
+      "file": "services/learningRecordsNormalizer.js",
+      "trigger": "@event io.cozy.learningrecords:CREATED",
+      "debounce": "10s"
     }
   }
 }
