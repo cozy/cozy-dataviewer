@@ -7,7 +7,7 @@
 import CozyClient from 'cozy-client'
 import logger from 'cozy-logger'
 import CozyRealtime from 'cozy-realtime'
-const log = logger.namespace('cliskTimeout')
+const log = logger.namespace('webhookReceiver')
 
 const main = async () => {
   const client = CozyClient.fromEnv()
