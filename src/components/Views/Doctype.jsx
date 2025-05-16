@@ -108,7 +108,7 @@ export const Doctype = () => {
         </div>
       ) : (
         <>
-          {data && formatter(data)}
+          {data && formatter(data, fetchData)}
 
           {!error && data && (
             <Stack className="u-mt-1" spacing="s">

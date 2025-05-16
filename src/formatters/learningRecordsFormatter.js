@@ -10,9 +10,10 @@ import TextField from 'cozy-ui/transpiled/react/TextField'
 /**
  * Custom formatter for the jobs doctype
  * @param {Array} data - Array of jobs
+ * @param {Function} reloadData - Function to reload the data
  * @returns {JSX.Element} - Formatted view of the documents
  */
-export const learningRecordsFormatter = data => {
+export const learningRecordsFormatter = (data, reloadData) => {
   // We create a component that will handle the state
   const LearningRecordsView = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -55,8 +56,10 @@ export const learningRecordsFormatter = data => {
                 )
                 await sendXAPIStatement(statement)
               }
-              // Reload the page after all requests are done
-              window.location.reload()
+              // Reload the data instead of the page
+              if (reloadData) {
+                await reloadData()
+              }
             } finally {
               setIsLoading(false)
             }
