@@ -14,8 +14,5 @@ const formatters = {
  * @returns {Function} - A formatter function that takes data and returns formatted JSX
  */
 export const getFormatter = doctype => {
-  console.log('🚀 formatters', formatters)
-  console.log('🚀 doctype', doctype)
-  console.log('🚀 formatter', formatters[doctype])
   return formatters[doctype] || defaultFormatter
 }
