@@ -7,6 +7,8 @@ import Button from 'cozy-ui/transpiled/react/Buttons'
 import Icon from 'cozy-ui/transpiled/react/Icon'
 import SpinnerIcon from 'cozy-ui/transpiled/react/Icons/Spinner'
 import TextField from 'cozy-ui/transpiled/react/TextField'
+
+import ActivityGrid from '../components/Views/ActivityGrid'
 /**
  * Custom formatter for the jobs doctype
  * @param {Array} data - Array of jobs
@@ -17,9 +19,13 @@ export const learningRecordsFormatter = (data, reloadData) => {
   // We create a component that will handle the state
   const LearningRecordsView = () => {
     const [isLoading, setIsLoading] = useState(false)
+    // Group records by date
+    const grouped = groupRecordsByDate(data)
 
     return (
       <div className="jobs-formatter">
+        {/* Activity grid at the top */}
+        <ActivityGrid grouped={grouped} />
         {data.map((doc, index) => {
           // Extract verb and object from the learning record
           const verb =
@@ -131,4 +137,22 @@ async function sendXAPIStatement(statement) {
       body: JSON.stringify(statement)
     }
   )
+}
+
+/**
+ * Groups records by date.
+ *
+ * @param {Array} records - The array of records to group.
+ * @returns {Object} - An object where keys are dates (YYYY-MM-DD) and values are the count of records for that date.
+ */
+function groupRecordsByDate(records) {
+  const grouped = {}
+  for (const doc of records) {
+    // Try to get the timestamp from the record
+    const timestamp = doc.source?.timestamp || doc.cozyMetadata.createdAt
+    if (!timestamp) continue
+    const date = new Date(timestamp).toISOString().slice(0, 10) // YYYY-MM-DD
+    grouped[date] = (grouped[date] || 0) + 1
+  }
+  return grouped
 }
