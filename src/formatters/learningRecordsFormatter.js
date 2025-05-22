@@ -20,16 +20,30 @@ export const learningRecordsFormatter = (data, reloadData) => {
 
     return (
       <div className="jobs-formatter">
-        {data.map((doc, index) => (
-          <Accordion key={doc._id || index}>
-            <AccordionSummary>{doc._id || 'No ID'}</AccordionSummary>
-            <AccordionDetails>
-              <pre className="u-m-1 u-ov-auto">
-                {JSON.stringify(doc, null, 2)}
-              </pre>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+        {data.map((doc, index) => {
+          // Extract verb and object from the learning record
+          const verb =
+            doc.source?.verb?.display?.['en-US'] ||
+            doc.source?.verb?.id ||
+            'Unknown verb'
+          // Prefer object.name, fallback to object.id
+          const objectName =
+            doc.source?.object?.name ||
+            doc.source?.object?.id ||
+            'Unknown object'
+          const headerText = `${verb} ${objectName}`
+          return (
+            <Accordion key={doc._id || index}>
+              {/* Display the verb and object in the header */}
+              <AccordionSummary>{headerText}</AccordionSummary>
+              <AccordionDetails>
+                <pre className="u-m-1 u-ov-auto">
+                  {JSON.stringify(doc, null, 2)}
+                </pre>
+              </AccordionDetails>
+            </Accordion>
+          )
+        })}
         <div className="u-flex u-flex-items-center">
           <TextField
             className="u-mt-1 u-p-1 u-br-2"
