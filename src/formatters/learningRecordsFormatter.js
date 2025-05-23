@@ -149,7 +149,7 @@ function groupRecordsByDate(records) {
   const grouped = {}
   for (const doc of records) {
     // Try to get the timestamp from the record
-    const timestamp = doc.source?.timestamp || doc.cozyMetadata.createdAt
+    const timestamp = doc.source?.timestamp || doc.cozyMetadata?.createdAt
     if (!timestamp) continue
     const date = new Date(timestamp).toISOString().slice(0, 10) // YYYY-MM-DD
     grouped[date] = (grouped[date] || 0) + 1
