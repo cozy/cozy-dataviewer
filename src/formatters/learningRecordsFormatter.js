@@ -9,6 +9,9 @@ import SpinnerIcon from 'cozy-ui/transpiled/react/Icons/Spinner'
 import TextField from 'cozy-ui/transpiled/react/TextField'
 
 import ActivityGrid from '../components/Views/ActivityGrid'
+
+const SHOW_IMPORT = false
+
 /**
  * Custom formatter for the jobs doctype
  * @param {Array} data - Array of jobs
@@ -50,41 +53,45 @@ export const learningRecordsFormatter = (data, reloadData) => {
             </Accordion>
           )
         })}
-        <div className="u-flex u-flex-items-center">
-          <TextField
-            className="u-mt-1 u-p-1 u-br-2"
-            id="actorEmail"
-            defaultValue="alice@visions.com"
-          />
-          {isLoading && <Icon className="u-ml-1" icon={SpinnerIcon} spin />}
-        </div>
-        <Button
-          className="u-mt-1 u-p-1 u-br-2"
-          label="Import from test organization"
-          onClick={async () => {
-            const actorEmail = document.querySelector('input#actorEmail').value
-            const verb = 'played'
-            const objectId = 'http://example.adlnet.gov/xapi/example/game'
+        {SHOW_IMPORT && (
+          <>
+            <div className="u-flex u-flex-items-center">
+              <TextField
+                className="u-mt-1 u-p-1 u-br-2"
+                id="actorEmail"
+                defaultValue="alice@visions.com"
+              />
+              {isLoading && <Icon className="u-ml-1" icon={SpinnerIcon} spin />}
+            </div>
+            <Button
+              className="u-mt-1 u-p-1 u-br-2"
+              label="Import from test organization"
+              onClick={async () => {
+                const actorEmail = document.querySelector('input#actorEmail').value
+                const verb = 'played'
+                const objectId = 'http://example.adlnet.gov/xapi/example/game'
 
-            setIsLoading(true)
-            try {
-              for (let i = 0; i < 10; i++) {
-                const statement = createXAPIStatement(
-                  actorEmail,
-                  verb,
-                  objectId
-                )
-                await sendXAPIStatement(statement)
-              }
-              // Reload the data instead of the page
-              if (reloadData) {
-                await reloadData()
-              }
-            } finally {
-              setIsLoading(false)
-            }
-          }}
-        />
+                setIsLoading(true)
+                try {
+                  for (let i = 0; i < 10; i++) {
+                    const statement = createXAPIStatement(
+                      actorEmail,
+                      verb,
+                      objectId
+                    )
+                    await sendXAPIStatement(statement)
+                  }
+                  // Reload the data instead of the page
+                  if (reloadData) {
+                    await reloadData()
+                  }
+                } finally {
+                  setIsLoading(false)
+                }
+              }}
+            />
+          </>
+        )}
       </div>
     )
   }
@@ -92,19 +99,18 @@ export const learningRecordsFormatter = (data, reloadData) => {
   return <LearningRecordsView />
 }
 
-function generateUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0
-    const v = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
-
-function getCurrentTimestamp() {
-  return new Date().toISOString()
-}
 
 function createXAPIStatement(actorEmail, verb, objectId) {
+  function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = (Math.random() * 16) | 0
+      const v = c === 'x' ? r : (r & 0x3) | 0x8
+      return v.toString(16)
+    })
+  }
+  function getCurrentTimestamp() {
+    return new Date().toISOString()
+  }
   const statementId = generateUUID()
   return {
     id: statementId,
