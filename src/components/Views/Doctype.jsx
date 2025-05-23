@@ -93,7 +93,7 @@ export const Doctype = () => {
   const hasPrevPage = pagination.currentPage > 0
 
   return (
-    <div>
+    <div className="u-p-2">
       <h1>{doctype}</h1>
 
       {error && (
