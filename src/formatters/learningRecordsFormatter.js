@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
+import { useClient, Q } from 'cozy-client'
 import Accordion from 'cozy-ui/transpiled/react/Accordion'
 import AccordionDetails from 'cozy-ui/transpiled/react/AccordionDetails'
 import AccordionSummary from 'cozy-ui/transpiled/react/AccordionSummary'
@@ -22,13 +23,43 @@ export const learningRecordsFormatter = (data, reloadData) => {
   // We create a component that will handle the state
   const LearningRecordsView = () => {
     const [isLoading, setIsLoading] = useState(false)
-    // Group records by date
-    const grouped = groupRecordsByDate(data)
+    const [yearlyData, setYearlyData] = useState([])
+    const client = useClient()
+
+    // Fetch all records for the current year
+    useEffect(() => {
+      const fetchYearlyData = async () => {
+        const startOfYear = new Date()
+        startOfYear.setMonth(0, 1)
+        startOfYear.setHours(0, 0, 0, 0)
+
+        const endOfYear = new Date()
+        endOfYear.setMonth(11, 31)
+        endOfYear.setHours(23, 59, 59, 999)
+
+        const query = Q('io.cozy.learningrecords')
+          .where({
+            'source.timestamp': {
+              $gte: startOfYear.toISOString(),
+              $lte: endOfYear.toISOString()
+            }
+          })
+          .indexFields(['source.timestamp'])
+
+        const result = await client.query(query)
+        setYearlyData(result.data)
+      }
+
+      fetchYearlyData()
+    }, [client])
+
+    // Group records by date for yearly data
+    const yearlyGrouped = groupRecordsByDate(yearlyData)
 
     return (
       <div className="jobs-formatter">
-        {/* Activity grid at the top */}
-        <ActivityGrid grouped={grouped} />
+        {/* Activity grid at the top showing yearly data */}
+        <ActivityGrid grouped={yearlyGrouped} />
         {data.map((doc, index) => {
           // Extract verb and object from the learning record
           const verb =
@@ -67,7 +98,8 @@ export const learningRecordsFormatter = (data, reloadData) => {
               className="u-mt-1 u-p-1 u-br-2"
               label="Import from test organization"
               onClick={async () => {
-                const actorEmail = document.querySelector('input#actorEmail').value
+                const actorEmail =
+                  document.querySelector('input#actorEmail').value
                 const verb = 'played'
                 const objectId = 'http://example.adlnet.gov/xapi/example/game'
 
@@ -99,14 +131,16 @@ export const learningRecordsFormatter = (data, reloadData) => {
   return <LearningRecordsView />
 }
 
-
 function createXAPIStatement(actorEmail, verb, objectId) {
   function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      const r = (Math.random() * 16) | 0
-      const v = c === 'x' ? r : (r & 0x3) | 0x8
-      return v.toString(16)
-    })
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0
+        const v = c === 'x' ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+      }
+    )
   }
   function getCurrentTimestamp() {
     return new Date().toISOString()
