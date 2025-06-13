@@ -64,6 +64,11 @@
       "file": "services/webhookReceiver.js",
       "trigger": "@webhook"
     },
+    "learningRecordsReceiver": {
+      "type": "node",
+      "file": "services/learningRecordsReceiver.js",
+      "trigger": "@webhook"
+    },
     "learningRecordsNormalizer": {
       "type": "node",
       "file": "services/learningRecordsNormalizer.js",
