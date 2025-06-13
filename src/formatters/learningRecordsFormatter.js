@@ -14,13 +14,12 @@ import ActivityGrid from '../components/Views/ActivityGrid'
 const SHOW_IMPORT = false
 
 /**
- * Custom formatter for the jobs doctype
+ * Custom formatter for the io.cozy.learningrecords doctype
  * @param {Array} data - Array of jobs
  * @param {Function} reloadData - Function to reload the data
  * @returns {JSX.Element} - Formatted view of the documents
  */
 export const learningRecordsFormatter = (data, reloadData) => {
-  // We create a component that will handle the state
   const LearningRecordsView = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [yearlyData, setYearlyData] = useState([])
@@ -58,6 +57,7 @@ export const learningRecordsFormatter = (data, reloadData) => {
 
     return (
       <div className="jobs-formatter">
+        <h1 className="u-mb-2">Learning Records</h1>
         {/* Activity grid at the top showing yearly data */}
         <ActivityGrid grouped={yearlyGrouped} />
         {data.map((doc, index) => {

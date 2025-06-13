@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 import { BarComponent, BarCenter } from 'cozy-bar'
 import { useClient } from 'cozy-client'
+import flags from 'cozy-flags'
 import { Layout, Main, Content } from 'cozy-ui/transpiled/react/Layout'
 import Typography from 'cozy-ui/transpiled/react/Typography'
 import Alerter from 'cozy-ui/transpiled/react/deprecated/Alerter'
@@ -15,11 +16,12 @@ const AppLayout = () => {
   const { t } = useI18n()
   const { isMobile } = useBreakpoints()
   const client = useClient()
+  const isLearningRecordsEnabled = flags('dataviewer.plrs')
 
   return (
     <Layout>
       <BarComponent searchOptions={{ enabled: true }} />
-      <Sidebar />
+      {!isLearningRecordsEnabled && <Sidebar />}
       <Main>
         <Content>
           {isMobile && (

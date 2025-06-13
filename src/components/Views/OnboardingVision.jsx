@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 
 import { useClient, Q } from 'cozy-client'
 import Button from 'cozy-ui/transpiled/react/Buttons'
@@ -7,12 +7,27 @@ import Stack from 'cozy-ui/transpiled/react/Stack'
 import Typography from 'cozy-ui/transpiled/react/Typography'
 
 import VisionIcon from '@/assets/images/vision.svg'
+import OnboardingManager from '@/lib/OnboardingManager'
 
 export const OnboardingVision = () => {
   const client = useClient()
   const [showIframe, setShowIframe] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
   const [trigger, setTrigger] = useState(null)
+  const onboardingManager = useMemo(
+    () => new OnboardingManager(client),
+    [client]
+  )
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const done = await onboardingManager.isOnboardingDone()
+      if (done) {
+        setIsComplete(true)
+      }
+    }
+    fetchSettings()
+  }, [client, onboardingManager])
 
   useEffect(() => {
     const fetchTrigger = async () => {
@@ -35,16 +50,17 @@ export const OnboardingVision = () => {
 
   useEffect(() => {
     const rt = client.plugins.realtime
-    const handler = () => {
+    const handler = async () => {
       setShowIframe(false)
       setIsComplete(true)
+      await onboardingManager.markOnboardingDone()
     }
     rt.subscribe('notified', 'io.cozy.jobs', 'PDI_OK', handler)
 
     return () => {
       rt.unsubscribe('notified', 'io.cozy.jobs', 'PID_OK', handler)
     }
-  }, [client])
+  }, [client, onboardingManager])
 
   const handleButtonClick = () => {
     setShowIframe(true)

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useClient, Q } from 'cozy-client'
+import flags from 'cozy-flags'
 import Alert from 'cozy-ui/transpiled/react/Alert'
 import Button from 'cozy-ui/transpiled/react/Button'
 import Icon from 'cozy-ui/transpiled/react/Icon'
@@ -21,6 +22,8 @@ export const Doctype = () => {
     totalCount: 0
   })
   const client = useClient()
+
+  const isLearningRecordsEnabled = flags('dataviewer.plrs')
 
   const fetchData = async (page = 0) => {
     setIsLoading(true)
@@ -94,7 +97,7 @@ export const Doctype = () => {
 
   return (
     <div className="u-p-2">
-      <h1>{doctype}</h1>
+      {isLearningRecordsEnabled ? null : <h1>{doctype}</h1>}
 
       {error && (
         <Alert className="u-mb-1" severity="error">

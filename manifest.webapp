@@ -38,6 +38,11 @@
       "type": "io.cozy.settings",
       "verbs": ["GET"]
     },
+    "dataviewer settings": {
+      "description": "Required to allow dataviewer to save its own settings",
+      "type": "io.cozy.dataviewer.settings",
+      "verbs": ["GET", "POST", "PUT", "DELETE"]
+    },
     "doctypes": {
       "description": "To get the list of doctypes",
       "type": "io.cozy.doctypes",
