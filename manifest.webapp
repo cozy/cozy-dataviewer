@@ -74,11 +74,10 @@
       "file": "services/learningRecordsReceiver.js",
       "trigger": "@webhook"
     },
-    "learningRecordsNormalizer": {
+    "learningRecordsFetcher": {
       "type": "node",
-      "file": "services/learningRecordsNormalizer.js",
-      "trigger": "@event io.cozy.learningrecords:CREATED",
-      "debounce": "10s"
+      "file": "services/learningRecordsFetcher.js",
+      "trigger": "@webhook"
     }
   }
 }
