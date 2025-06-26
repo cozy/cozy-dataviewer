@@ -37,6 +37,7 @@ export const OnboardingVision = () => {
           type: '@webhook'
         })
       )
+      console.log('triggers', triggers)
       const trigger = triggers.find(
         t =>
           t.message.name === 'webhookReceiver' &&
