@@ -55,9 +55,48 @@ export const learningRecordsFormatter = (data, reloadData) => {
     // Group records by date for yearly data
     const yearlyGrouped = groupRecordsByDate(yearlyData)
 
+    // Calculate completed trainings count
+    const completedCount = yearlyData.filter(doc => {
+      const verb =
+        doc.source?.verb?.display?.['en-US'] ||
+        doc.source?.verb?.display?.['fr-FR'] ||
+        doc.source?.verb?.id ||
+        ''
+      return verb.toLowerCase().includes('completed')
+    }).length
+
     return (
       <div className="jobs-formatter">
         <h1 className="u-mb-2">Learning Records</h1>
+
+        {/* Metrics section */}
+        <div
+          className="u-mb-2"
+          style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}
+        >
+          <div
+            style={{
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e9ecef',
+              borderRadius: '8px',
+              padding: '16px',
+              minWidth: '200px',
+              textAlign: 'center'
+            }}
+          >
+            <div
+              style={{ fontSize: '24px', fontWeight: 'bold', color: '#28a745' }}
+            >
+              {completedCount}
+            </div>
+            <div
+              style={{ fontSize: '14px', color: '#6c757d', marginTop: '4px' }}
+            >
+              Formations complétées
+            </div>
+          </div>
+        </div>
+
         {/* Activity grid at the top showing yearly data */}
         <ActivityGrid grouped={yearlyGrouped} />
         {data.map((doc, index) => {
