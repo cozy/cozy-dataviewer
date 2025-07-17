@@ -6,6 +6,7 @@ import fs from 'fs/promises'
 import path from 'path'
 
 import CozyClient from 'cozy-client'
+import flags from 'cozy-flags'
 import logger from 'cozy-logger'
 
 const log = logger.namespace('learningRecordsReceiver')
@@ -17,8 +18,17 @@ const main = async () => {
     : [payload]
   log('info', `Received ${learningRecords.length} learning records`)
   const client = CozyClient.fromEnv()
+  await client.registerPlugin(flags.plugin)
+  await client.plugins.flags.initializing
 
-  const response = await fetch(`http://localhost:8100/xAPI/statements/`, {
+  const plrsUrl = flags('dataviewer.plrs.server.url')
+
+  if (!plrsUrl) {
+    log('error', 'dataviewer.plrs.server.url flag is not set yet')
+    return
+  }
+
+  const response = await fetch(`${plrsUrl}/xAPI/statements/`, {
     method: 'POST',
     headers: makePlrsHeaders(await generateToken(client)),
     body: JSON.stringify(learningRecords)
