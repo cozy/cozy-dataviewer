@@ -37,7 +37,16 @@ export const OnboardingVision = () => {
           type: '@webhook'
         })
       )
-      console.log('triggers', triggers)
+      const learningRecordsReceiverTrigger = triggers.find(
+        t =>
+          t.message.name === 'learningRecordsReceiver' &&
+          t.message.slug === 'dataviewer'
+      )
+      // eslint-disable-next-line no-console
+      console.info(
+        'Webhook receiver url',
+        learningRecordsReceiverTrigger.links.webhook
+      )
       const trigger = triggers.find(
         t =>
           t.message.name === 'webhookReceiver' &&
