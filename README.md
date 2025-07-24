@@ -20,11 +20,19 @@ Refer to the Cozy Stack README: https://github.com/cozy/cozy-stack/#installing-a
 
 ### 2. Install PLRS Server
 
-Follow the PLRS server README instructions: https://github.com/Prometheus-X-association/plrs
+The PLRS server is included as a submodule in this repository. First, initialize and update the submodule:
+
+```bash
+git submodule init
+git submodule update
+```
+
+The PLRS server is located in the `lrs-gateway/` directory. Follow the PLRS server README instructions or https://github.com/Prometheus-X-association/lrs-gateway
 
 ⚠️ **Note:** You won't need any database. Just run the equivalent of:
 
 ```bash
+cd lrs-gateway
 docker compose up -d app
 ```
 
@@ -81,5 +89,5 @@ Once your PDC is running and linked to a Vision account:
 
 For any issues or questions, refer to the documentation of related projects:
 - [Cozy Stack](https://github.com/cozy/cozy-stack/)
-- [PLRS Server](https://github.com/Prometheus-X-association/plrs)
+- [PLRS Server](https://github.com/Prometheus-X-association/lrs-gateway)
 - [Dataspace Connector](https://github.com/Prometheus-X-association/dataspace-connector)
