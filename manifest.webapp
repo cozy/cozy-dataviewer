@@ -1,0 +1,132 @@
+{
+  "name": "Dataviewer",
+  "slug": "dataviewer",
+  "categories": [],
+  "version": "0.1.0",
+  "licence": "AGPL-3.0",
+  "editor": "",
+  "source": "",
+  "developer": {
+    "name": "Linagora",
+    "url": "https://linagora.com"
+  },
+  "routes": {
+    "/": {
+      "folder": "/",
+      "index": "index.html",
+      "public": false
+    },
+    "/web": {
+      "folder": "/",
+      "index": "index.html",
+      "public": false
+    },
+    "/web/": {
+      "folder": "/",
+      "index": "index.html",
+      "public": false
+    }
+  },
+  "permissions": {
+    "apps": {
+      "description": "Required by the cozy-bar to display the icons of the apps",
+      "type": "io.cozy.apps",
+      "verbs": ["GET"]
+    },
+    "settings": {
+      "description": "Required by the cozy-bar to display Claudy and know which applications are coming soon",
+      "type": "io.cozy.settings",
+      "verbs": ["GET"]
+    },
+    "dataviewer settings": {
+      "description": "Required to allow dataviewer to save its own settings",
+      "type": "io.cozy.dataviewer.settings",
+      "verbs": ["GET", "POST", "PUT", "DELETE"]
+    },
+    "doctypes": {
+      "description": "To get the list of doctypes",
+      "type": "io.cozy.doctypes",
+      "verbs": ["GET"]
+    },
+    "learningrecords": {
+      "description": "To get the list of learning records",
+      "type": "io.cozy.learningrecords",
+      "verbs": ["GET", "POST", "PUT", "DELETE"]
+    },
+    "jobs": {
+      "description": "To send job notifications",
+      "type": "io.cozy.jobs"
+    },
+    "triggers": {
+      "description": "To view triggers",
+      "type": "io.cozy.triggers",
+      "verbs": ["GET"]
+    },
+
+    "ciphers": {
+      "type": "com.bitwarden.ciphers",
+      "verbs": ["GET"]
+    },
+    "conversations": {
+      "type": "io.cozy.ai.chat.conversations",
+      "verbs": ["GET"]
+    },
+    "contacts": {
+      "type": "io.cozy.contacts",
+      "verbs": ["GET"]
+    },
+    "files": {
+      "type": "io.cozy.files",
+      "verbs": ["GET"]
+    },
+    "files versions": {
+      "type": "io.cozy.files.versions",
+      "verbs": ["GET"]
+    },
+    "home settings": {
+      "type": "io.cozy.home.settings",
+      "verbs": ["GET"]
+    },
+    "jobs": {
+      "type": "io.cozy.jobs",
+      "verbs": ["GET"]
+    },
+    "konnectors": {
+      "type": "io.cozy.konnectors",
+      "verbs": ["GET"]
+    },
+    "notes steps": {
+      "type": "io.cozy.notes.steps",
+      "verbs": ["GET"]
+    },
+    "notifications": {
+      "type": "io.cozy.notifications",
+      "verbs": ["GET"]
+    },
+    "remote requests": {
+      "type": "io.cozy.remote.requests",
+      "verbs": ["GET"]
+    },
+    "sessions logins": {
+      "type": "io.cozy.sessions.logins",
+      "verbs": ["GET"]
+    }
+  },
+  "services": {
+    "webhookReceiver": {
+      "type": "node",
+      "file": "services/webhookReceiver.js",
+      "trigger": "@webhook"
+    },
+    "learningRecordsReceiver": {
+      "type": "node",
+      "file": "services/learningRecordsReceiver.js",
+      "trigger": "@webhook"
+    },
+    "learningRecordsFetcher": {
+      "type": "node",
+      "file": "services/learningRecordsFetcher.js",
+      "trigger": "@webhook"
+    }
+  }
+}
